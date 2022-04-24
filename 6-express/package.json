@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "express-async-errors": "^3.1.1"
   },
   "name": "6-express",
   "version": "1.0.0",
