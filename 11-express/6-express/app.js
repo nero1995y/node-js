@@ -1,6 +1,8 @@
 import express from 'express';
 import fs from 'fs';
 import fsAsync from 'fs/promises';
+// require('express-async-errors); //CommonJS module 할때만 사용하는 것이고
+import {} from 'express-async-errors'; // 최신모듀르은 임폴트
 
 const app = express();
 
@@ -39,18 +41,17 @@ app.get('/file2', (req, res, next) => {
   //catch((error) => next(error) 전달된인자와 호출하는 인자가같으면 생략가능
 
   //2. 에러처리하기
-  fsAsync
-    .readFile('/file.txt')
-    .catch((error) => res.status(404).send('File not found'));
+  // fsAsync
+  //   .readFile('/file.txt')
+  //   .catch((error) => res.status(404).send('File not found'));
+
+  //3. 모듈사용하여 에러헨들링
+  return fsAsync.readFile('/file.txt');
 });
 // 에러를 던져 미들웨어를 호출하고
 
 app.get('/file3', async (req, res) => {
-  try {
-    const data = await fsAsync.readFile('/file.txt');
-  } catch (error) {
-    res.status(404).send('File not found');
-  }
+  const data = await fsAsync.readFile('/file.txt');
   // 코드자체는 동기적이나 안정망에는 포착되지 않는다 프로미스로 리턴하기때문이다 함수앞에 에이싱크를 붙여주게 되면 함수내부부는 함수 자체는 프로미스로 감싸진다
   // 프로미스 내부에서 에러가 발생하는 것과 동일하다
 });
